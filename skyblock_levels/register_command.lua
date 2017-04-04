@@ -46,3 +46,22 @@ minetest.register_chatcommand('who', {
 		end
 	end,
 })
+
+if not minetest.get_modpath("sethome") then
+	minetest.register_privilege("home", {
+		description = "Can use /home",
+		give_to_singleplayer = true
+	})
+end
+
+minetest.override_chatcommand('home', {
+	privs = {home=true},
+    	description = "Teleports you to your spawn position",
+    	func = function(name)
+      		local spawn = skyblock.get_spawn(name)
+      		local pos = {x = spawn.x, y = spawn.y + 1.5, z= spawn.z}
+      		local player = minetest.get_player_by_name(name)
+      		player:setpos(pos)
+       		return
+    	end,
+})
